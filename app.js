@@ -13,13 +13,14 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(__dirname.concat('/dist/')));
+const posts = require('./routes/index');
 
-  app.get(/.*/, (req, res) => res.sendFile(__dirname.concat('/dist/index.html')));
-}
+app.use('/', posts);
+
+app.use(express.static(path.join(__dirname, 'dist')));
+
+app.get(/\/#\/.*/, (req, res) => res.sendFile(path.join(__dirname, '/dist/index.html')));
 
 module.exports = app;
