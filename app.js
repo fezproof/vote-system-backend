@@ -5,9 +5,6 @@ const logger = require('morgan');
 const cors = require('cors');
 require('dotenv').config();
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-
 require('./models/db');
 
 const app = express();
@@ -19,7 +16,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(__dirname.concat('/dist/')));
+
+  app.get(/.*/, (req, res) => res.sendFile(__dirname.concat('/dist/index.html')));
+}
 
 module.exports = app;
