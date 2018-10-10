@@ -1,0 +1,15 @@
+language: node_js
+nodejs:
+  - "lts/*"
+
+# Clean and don't fail
+install:
+  - rm -rf dist/* || exit 0
+  - npm install
+
+# Build the website
+script:
+  - npm run build
+
+notifications:
+  email: false
